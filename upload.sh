@@ -1,8 +1,9 @@
 #!/bin/bash
 ###INSTRUCTIONS####
-./upload.sh {path of source folder} {path of destination folder}
+####    ./upload.sh {path of source folder} {path of destination folder}
 ###################
-
+dest=`echo ${2%/}
+src=$1
 ###Checking User as only hdfs user can upload files###
 if [[ ! "$USER" = "hdfs" ]];then 
 	echo "User does not have permission to upload files"
@@ -11,20 +12,20 @@ if [[ ! "$USER" = "hdfs" ]];then
 fi
 
 ###Checking if folder exists###
-EXIST=`hdfs dfs -ls $2 | grep Found`
+EXIST=`hdfs dfs -ls $dest | grep Found`
 
 if [[ $EXIST  ]] ;then
 	echo "Folder exists"
 else
 	echo "Folder doesn't exist"
 	echo "Creating Folder"
-	hdfs dfs -mkdir -p $2
+	hdfs dfs -mkdir -p $dest
 fi
 
 ###comparing if files exist and ask for overwrite permission####
 
-x=`ls $1`
-y=`hdfs dfs -ls $2| tr -s " " | cut -d " " -f8`
+x=`ls $src`
+y=`hdfs dfs -ls $dest| tr -s " " | cut -d " " -f8`
 
 for FILE in $x
 do
@@ -32,12 +33,12 @@ do
 		echo "$FILE Already Exists in destination folder"
 		read -p"Replace $FILE?(Y/N)" replace
 		if [[ "$replace" = "Y" || "$replace" = "y" ]];then
-			hdfs dfs -rm $2/$FILE
+			hdfs dfs -rm $dest/$FILE
 		fi
 	fi
 done
 
 ###uploading files###
-hdfs dfs -put $1 $2;
+hdfs dfs -put $src $dest;
 
-hdfs dfs -ls $2;
+hdfs dfs -ls $dest;
