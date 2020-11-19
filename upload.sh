@@ -1,10 +1,13 @@
 #!/bin/bash
 
+###Checking User as only hdfs user can upload files###
 if [[ ! "$USER" = "hdfs" ]];then 
 	echo "User does not have permission to upload files"
 	echo "Logging in user hdfs"
 	su hdfs
 fi
+
+###Checking if folder exists###
 EXIST=`hdfs dfs -ls $2 | grep Found`
 
 if [[ $EXIST  ]] ;then
@@ -15,7 +18,7 @@ else
 	hdfs dfs -mkdir -p $2
 fi
 
-#compare if files exist and ask for overwrite permission
+###comparing if files exist and ask for overwrite permission####
 
 x=`ls $1`
 y=`hdfs dfs -ls $2| tr -s " " | cut -d " " -f8`
@@ -31,6 +34,7 @@ do
 	fi
 done
 
+###uploading files###
 hdfs dfs -put $1 $2;
 
 hdfs dfs -ls $2;
