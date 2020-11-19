@@ -1,4 +1,7 @@
 #!/bin/bash
+###INSTRUCTIONS####
+./upload.sh {path of source folder} {path of destination folder}
+###################
 
 ###Checking User as only hdfs user can upload files###
 if [[ ! "$USER" = "hdfs" ]];then 
