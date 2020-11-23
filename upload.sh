@@ -8,7 +8,7 @@ src=$1
 if [[ ! "$USER" = "hdfs" ]];then 
 	echo "User does not have permission to upload files"
 	echo "Logging in user hdfs"
-	su hdfs -c ./upload.sh $src $dest
+	su hdfs -c $0 $src $dest
 fi
 
 ###Checking if folder exists###
