@@ -2,7 +2,7 @@
 ###INSTRUCTIONS####
 ####    ./upload.sh {path of source folder} {path of destination folder}
 ###################
-dest=`echo ${2%/}`
+dest=$2
 src=$1
 ###Checking User as only hdfs user can upload files###
 if [[ ! "$USER" = "hdfs" ]];then 
